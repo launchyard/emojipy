@@ -1,0 +1,7 @@
+setup.py
+emojipy/__init__.py
+emojipy/emojipy.py
+emojipy.egg-info/PKG-INFO
+emojipy.egg-info/SOURCES.txt
+emojipy.egg-info/dependency_links.txt
+emojipy.egg-info/top_level.txt

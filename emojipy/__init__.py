@@ -1,0 +1,1 @@
+from .emojipy import Emoji
