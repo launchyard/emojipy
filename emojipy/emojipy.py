@@ -2,7 +2,7 @@
 import re
 from html import escape
 from .ruleset import unicode_replace,\
-    shortcode_replace
+    shortcode_replace, ascii_replace
 
 
 class Emoji(object):
@@ -26,7 +26,7 @@ class Emoji(object):
     @classmethod
     def to_image(cls, text):
         text = cls.unicode_to_image(text)
-        text = cls.shortname_to_image(text)
+        text = cls.shortcode_to_image(text)
 
         return text
 
@@ -67,5 +67,60 @@ class Emoji(object):
         return text
 
     @classmethod
-    def shortname_to_image(cls, text):
-        pass
+    def shortcode_to_image(cls, text):
+        def replace_shortcode(match):
+            shortcode = text[match.start():match.end()]
+            if not shortcode or shortcode not in shortcode_replace:
+                return shortcode
+            unicode = shortcode_replace[shortcode]
+            if cls.unicode_alt:
+                alt = cls.convert(unicode)
+            else:
+                alt = shortcode
+            filename = shortcode_replace[shortcode].upper()
+            if cls.image_type == 'png':
+                if cls.sprites:
+                    return '<span class="emojione-%s" title="%s">%s</span>'\
+                        % (filename, escape(shortcode), alt)
+                else:
+                    return '<img class="emojione" alt="%s" src="%s"/>' % (
+                        alt,
+                        cls.image_png_path+filename+'.png'+cls.cache_bust_param
+                    )
+            else:
+                if cls.sprites:
+                    return '<svg class="emojione"><description>%s</description>\
+                    <use xlink:href="%s#emoji-%s"</use></svg>' % (
+                        alt, cls.image_path_svg_sprites, filename)
+                else:
+                    return '<object class="emojione" data="%s" \
+                    type="image/svg+xml" standby="%s"> %s</object>' % (
+                        cls.image_svg_path+filename+'.svg'+cls.cache_bust_param, alt, alt)
+
+        text = re.sub(cls.shortcode_compiled, replace_shortcode, text)
+        return text
+
+    @classmethod
+    def shortcode_to_ascii(cls, text):
+        def replace_shortcode(match):
+            shortcode = text[match.start():match.end()]
+            if not shortcode and shortcode not in shortcode_replace:
+                return shortcode
+            unicode = shortcode_replace[shortcode]
+            reverse_ascii_unicode = {v: k for k, v in ascii_replace.items()}
+            if unicode in reverse_ascii_unicode:
+                return reverse_ascii_unicode[unicode]
+            return shortcode
+
+        return re.sub(cls.shortcode_compiled, replace_shortcode, text)
+
+    @classmethod
+    def convert(cls, hex_unicode):
+        """
+        Convert a unicode in hex string to actual unicode char
+        """
+
+        if '-' not in hex_unicode:
+            return chr(int(hex_unicode, 16))
+        parts = hex_unicode.split('-')
+        return ''.join(chr(int(x, 16)) for x in parts)
