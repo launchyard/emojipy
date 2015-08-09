@@ -1,6 +1,9 @@
 setup.py
 emojipy/__init__.py
+emojipy/create_ruleset.py
 emojipy/emojipy.py
+emojipy/generated.py
+emojipy/ruleset.py
 emojipy.egg-info/PKG-INFO
 emojipy.egg-info/SOURCES.txt
 emojipy.egg-info/dependency_links.txt

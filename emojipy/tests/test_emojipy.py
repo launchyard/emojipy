@@ -1,7 +1,7 @@
 # -*- coding: utf-8; -*-
 
 from unittest import TestCase, main as unittest_main
-from ..emojipy import Emoji
+from emojipy import Emoji
 
 
 class EmojipyTest(TestCase):
@@ -12,5 +12,5 @@ class EmojipyTest(TestCase):
         pass
 
 
-if __name__ == '__mani__':
+if __name__ == '__main__':
     unittest_main()
