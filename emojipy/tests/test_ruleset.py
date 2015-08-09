@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8; -*-
 
-from unittest import TestCase, main as unittest_main
+from unittest import TestCase
 import json
 
 from emojipy.ruleset import ascii_replace,\
@@ -24,7 +24,3 @@ class MappingTests(TestCase):
         self.assertEqual(self.emoji_count, len(unicode_replace))
         self.assertEqual(len(ascii_replace), len(self.ascii_list))
         self.assertEqual(len(shortcode_replace), len(unicode_replace))
-
-
-if __name__ == '__main__':
-    unittest_main()
