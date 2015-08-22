@@ -7,4 +7,5 @@ emojipy/ruleset.py
 emojipy.egg-info/PKG-INFO
 emojipy.egg-info/SOURCES.txt
 emojipy.egg-info/dependency_links.txt
+emojipy.egg-info/pbr.json
 emojipy.egg-info/top_level.txt
